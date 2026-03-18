@@ -576,12 +576,15 @@ export function App(): JSX.Element {
                     draft.theme.density =
                       event.target.value === "compact"
                         ? "compact"
-                        : "comfortable";
+                        : event.target.value === "spacious"
+                          ? "spacious"
+                          : "comfortable";
                   })
                 }
               >
                 <option value="comfortable">Comfortable</option>
                 <option value="compact">Compact</option>
+                <option value="spacious">Spacious</option>
               </select>
             </label>
 

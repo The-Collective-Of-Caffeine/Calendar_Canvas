@@ -1,7 +1,7 @@
 export type SyncSourceType = "ics-url" | "ics-file";
 export type EventType = "synced" | "custom" | "holiday";
 export type ThemePalette = "aurora" | "sunset" | "forest" | "ink";
-export type ThemeDensity = "comfortable" | "compact";
+export type ThemeDensity = "comfortable" | "compact" | "spacious";
 
 export interface SyncSettings {
   refreshIntervalMinutes: number;

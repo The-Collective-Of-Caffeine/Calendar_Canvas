@@ -47,15 +47,34 @@ function buildAgendaRows(
   density: string,
   startY: number
 ): string {
-  const maxItems = density === "compact" ? 7 : 5;
+  let maxItems: number;
+  let itemHeight: number;
+  let titleTruncate: number;
+
+  switch (density) {
+    case "spacious":
+      maxItems = 4;
+      itemHeight = 136;
+      titleTruncate = 42;
+      break;
+    case "compact":
+      maxItems = 7;
+      itemHeight = 94;
+      titleTruncate = 30;
+      break;
+    default:
+      maxItems = 5;
+      itemHeight = 112;
+      titleTruncate = 36;
+      break;
+  }
+
   const visible = events.slice(0, maxItems);
 
   return visible
     .map((event, index) => {
-      const top = startY + index * (density === "compact" ? 94 : 112);
-      const title = escapeXml(
-        truncate(event.title, density === "compact" ? 30 : 36)
-      );
+      const top = startY + index * itemHeight;
+      const title = escapeXml(truncate(event.title, titleTruncate));
       const meta = escapeXml(
         `${formatDateLabel(event.start)}  |  ${formatTimeLabel(event)}`
       );
@@ -64,8 +83,8 @@ function buildAgendaRows(
 
       return `
         <g transform="translate(88 ${top})">
-          <rect width="700" height="${density === "compact" ? 76 : 92}" rx="26" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" />
-          <rect x="24" y="22" width="10" height="${density === "compact" ? 32 : 44}" rx="5" fill="${event.color}" />
+          <rect width="700" height="${itemHeight - 20}" rx="26" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" />
+          <rect x="24" y="22" width="10" height="${itemHeight - 44}" rx="5" fill="${event.color}" />
           <text x="56" y="34" fill="#f8fbff" font-family="Aptos, Segoe UI, sans-serif" font-size="28" font-weight="700">${title}</text>
           <text x="56" y="63" fill="rgba(248,251,255,0.72)" font-family="Aptos, Segoe UI, sans-serif" font-size="18">${meta}</text>
           ${
@@ -169,7 +188,12 @@ export function renderWallpaper(
   const dateHeadlineFontSize = fitFontSize(dateHeadline, 590, 44, 30, 0.5);
   const monthTitleFontSize = fitFontSize(monthLabel, 340, 50, 36, 0.54);
   const markedDays = Object.keys(summarizeCounts(events)).length;
-  const agendaStartY = 348;
+  const agendaStartY =
+    config.theme.density === "spacious"
+      ? 364
+      : config.theme.density === "compact"
+        ? 340
+        : 348;
 
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
