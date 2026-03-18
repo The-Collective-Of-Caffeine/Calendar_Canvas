@@ -1,0 +1,50 @@
+{
+  "name": "calendar-canvas",
+  "version": "0.1.0",
+  "description": "A desktop calendar wallpaper utility with sync, holidays, and custom entries.",
+  "main": "dist-electron/main/index.js",
+  "scripts": {
+    "dev:launcher": "powershell -ExecutionPolicy Bypass -File scripts/dev.ps1",
+    "dev:clear-ready": "node scripts/clear-ready.js",
+    "dev:web": "vite",
+    "dev:main": "node scripts/watch-main.js",
+    "dev:electron": "wait-on tcp:5173 .main-ready && cross-env VITE_DEV_SERVER_URL=http://127.0.0.1:5173 electronmon dist-electron/main/index.js",
+    "dev:electron:inspect": "wait-on tcp:5173 .main-ready && cross-env VITE_DEV_SERVER_URL=http://127.0.0.1:5173 OPEN_DEVTOOLS=1 electronmon dist-electron/main/index.js",
+    "dev:stack": "npm run dev:clear-ready && concurrently -k -n web,main,electron -c cyan,yellow,green \"npm:dev:web\" \"npm:dev:main\" \"npm:dev:electron\"",
+    "dev:stack:inspect": "npm run dev:clear-ready && concurrently -k -n web,main,electron -c cyan,yellow,green \"npm:dev:web\" \"npm:dev:main\" \"npm:dev:electron:inspect\"",
+    "dev": "npm run dev:launcher",
+    "build:web": "vite build",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build": "npm run build:web && npm run build:main",
+    "start": "electron dist-electron/main/index.js"
+  },
+  "keywords": [
+    "calendar",
+    "wallpaper",
+    "electron",
+    "desktop"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "date-holidays": "^3.26.5",
+    "node-ical": "^0.20.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "wallpaper": "^7.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.1",
+    "electronmon": "^2.0.4",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5",
+    "wait-on": "^8.0.1"
+  }
+}

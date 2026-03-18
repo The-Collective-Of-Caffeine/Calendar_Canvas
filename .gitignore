@@ -1,0 +1,22 @@
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-electron/
+.main-ready
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+
+# Project-specific workspace notes
+.github/instructions/codacy.instructions.md
